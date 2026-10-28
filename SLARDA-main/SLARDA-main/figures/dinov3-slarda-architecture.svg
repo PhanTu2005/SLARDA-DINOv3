@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="520" viewBox="0 0 1440 520" role="img" aria-labelledby="title desc">
+  <title id="title">DINOv3 feature extractor integrated with SLARDA</title>
+  <desc id="desc">A sensor time window is converted into a grayscale raster, resized and repeated across RGB, encoded by a frozen DINOv3 ViT-S/16, then projected into SLARDA feature and classification dimensions.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M1,1 L11,6 L1,11 Z" fill="#45647c"/></marker>
+    <style>
+      .title{font:700 25px Arial,sans-serif;fill:#17324d}.label{font:700 18px Arial,sans-serif;fill:#17324d}.body{font:15px Arial,sans-serif;fill:#34495e}.small{font:13px Arial,sans-serif;fill:#52677a}.box{stroke:#7891a5;stroke-width:2;rx:14}.arrow{stroke:#45647c;stroke-width:3;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1440" height="520" fill="#f7fafc"/>
+  <text x="48" y="48" class="title">DINOv3 feature extraction in SLARDA</text>
+  <text x="48" y="76" class="small">The adapter replaces the selected CNN encoder while keeping SLARDA's training interface.</text>
+
+  <rect x="45" y="150" width="220" height="190" class="box" fill="#eaf2f8"/>
+  <text x="155" y="184" text-anchor="middle" class="label">Sensor window</text>
+  <text x="155" y="214" text-anchor="middle" class="body">[B, C, T]</text>
+  <text x="155" y="247" text-anchor="middle" class="small">C sensor channels</text>
+  <text x="155" y="269" text-anchor="middle" class="small">across T time steps</text>
+  <text x="155" y="307" text-anchor="middle" class="small">source or target domain</text>
+
+  <path d="M267 245 H310" class="arrow"/>
+  <rect x="320" y="130" width="270" height="230" class="box" fill="#fff4df"/>
+  <text x="455" y="168" text-anchor="middle" class="label">Sensor-to-image adapter</text>
+  <text x="455" y="208" text-anchor="middle" class="body">tanh → grayscale intensity</text>
+  <text x="455" y="238" text-anchor="middle" class="body">resize to 224 × 224</text>
+  <text x="455" y="268" text-anchor="middle" class="body">repeat across RGB channels</text>
+  <text x="455" y="298" text-anchor="middle" class="body">ImageNet normalization</text>
+  <text x="455" y="337" text-anchor="middle" class="small">[B, 3, 224, 224]</text>
+
+  <path d="M592 245 H635" class="arrow"/>
+  <rect x="645" y="130" width="250" height="230" class="box" fill="#e8f5ef"/>
+  <text x="770" y="168" text-anchor="middle" class="label">DINOv3 ViT-S/16</text>
+  <text x="770" y="208" text-anchor="middle" class="body">pretrained checkpoint</text>
+  <text x="770" y="238" text-anchor="middle" class="body">frozen parameters</text>
+  <text x="770" y="268" text-anchor="middle" class="body">eval mode + no gradients</text>
+  <text x="770" y="309" text-anchor="middle" class="small">384-dimensional tokens</text>
+
+  <path d="M897 245 H932 V185 H958" class="arrow"/>
+  <path d="M932 245 V370 H958" class="arrow"/>
+  <rect x="970" y="120" width="255" height="130" class="box" fill="#f1ecfa"/>
+  <text x="1097" y="158" text-anchor="middle" class="label">Patch tokens</text>
+  <text x="1097" y="190" text-anchor="middle" class="body">1 × 1 Conv projection</text>
+  <text x="1097" y="220" text-anchor="middle" class="small">384 → configured out_channels</text>
+  <rect x="970" y="305" width="255" height="130" class="box" fill="#fcecef"/>
+  <text x="1097" y="343" text-anchor="middle" class="label">Class token</text>
+  <text x="1097" y="375" text-anchor="middle" class="body">Linear projection</text>
+  <text x="1097" y="405" text-anchor="middle" class="small">384 → configured feat_dim</text>
+
+  <path d="M1227 185 H1260" class="arrow"/>
+  <path d="M1227 370 H1260" class="arrow"/>
+  <rect x="1270" y="120" width="145" height="130" class="box" fill="#eaf2f8"/>
+  <text x="1342" y="163" text-anchor="middle" class="label">SLARDA</text>
+  <text x="1342" y="193" text-anchor="middle" class="small">domain feature</text>
+  <text x="1342" y="214" text-anchor="middle" class="small">alignment</text>
+  <rect x="1270" y="305" width="145" height="130" class="box" fill="#eaf2f8"/>
+  <text x="1342" y="348" text-anchor="middle" class="label">Classifier</text>
+  <text x="1342" y="378" text-anchor="middle" class="small">class logits</text>
+  <text x="1342" y="399" text-anchor="middle" class="small">and teacher path</text>
+
+  <text x="48" y="482" class="small">Trainable: adapter projections and classifier. Frozen: DINOv3 backbone. No accuracy claim is made without a completed experiment.</text>
+</svg>
